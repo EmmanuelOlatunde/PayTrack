@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Contribution Records{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="main-container">
+      <h1 class="text-center mb-4">Contributions Records</h1>
+
+      <div class="mb-5">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>Member</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Receipt</th>
+                {% if user.is_staff %}
+                <th>Actions</th>
+                {% endif %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for payment in payments %}
+              <tr>
+                <td>{{ payment.member.name }}</td>
+                <td class="btn-naira">{{ payment.amount }}</td>
+                <td>{{ payment.date }}</td>
+                <td>
+                  {% if payment.receipt %}
+                  <a
+                    href="{{ payment.receipt.url }}"
+                    target="_blank"
+                    class="btn btn-info btn-sm"
+                  >
+                    View Receipt
+                  </a>
+                  {% else %}
+                  <span class="text-muted">No Receipt</span>
+                  {% endif %}
+                </td>
+                {% if user.is_staff %}
+                <td>
+                  <a
+                    href="{% url 'edit_payment' payment.id %}"
+                    class="btn btn-primary btn-sm edit-payment"
+                  >
+                    Edit
+                  </a>
+                </td>
+                {% endif %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="d-flex justify-content-between mt-3">
+          <a href="{% url 'monthly_records' %}" class="btn btn-success">
+            View Monthly Records
+          </a>
+
+          {% if user.is_staff %}
+          <a href="{% url 'add_payment' %}" class="btn btn-success">
+            Add Payment
+          </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <h1 class="mb-4">Member Debts</h1>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th>Debt</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for debt in member_debts %}
+            <tr>
+              <td>{{ debt.member.name }}</td>
+              <td class="btn-naira">{{ debt.debt }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <footer class="text-end text-muted mt-4">
+        <small>Last Updated: {% now "Y-m-d" %}</small>
+      </footer>
+    </div>
+
+    {% block scripts %}
+    <script>
+      // Function to format numbers with commas for thousands
+      function formatNumber(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+
+      // Format all numbers in the tables
+      document.addEventListener("DOMContentLoaded", function () {
+        const amounts = document.querySelectorAll(".btn-naira");
+        amounts.forEach((amount) => {
+          const value = amount.textContent.trim();
+          if (!isNaN(value)) {
+            amount.textContent = formatNumber(value);
+          }
+        });
+
+        // Add confirmation for editing payments
+        document.querySelectorAll(".edit-payment").forEach((link) => {
+          link.addEventListener("click", function (e) {
+            if (!confirm("Are you sure you want to edit this payment?")) {
+              e.preventDefault();
+            }
+          });
+        });
+      });
+    </script>
+    {% endblock %}
+{% endblock %}

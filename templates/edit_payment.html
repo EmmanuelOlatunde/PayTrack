@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Edit Payment{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/edit_payment.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="form-container">
+    
+        <h1 class="text-center mb-4 fw-bold">Edit Payment</h1>
+        
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="mb-4">
+                <label for="amount" class="form-label fw-bold">Amount:</label>
+                <div class="input-group">
+                    <span class="input-group-text">₦</span>
+                    <input 
+                        type="number" 
+                        id="amount" 
+                        name="amount" 
+                        value="{{ payment.amount }}" 
+                        step="0.01" 
+                        class="form-control"
+                        required
+                    >
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-bold">Receipt:</label>
+                <div class="d-flex align-items-center">
+                    <label class="custom-file-upload mb-0">
+                        <input 
+                            type="file" 
+                            name="receipt" 
+                            id="receipt" 
+                            accept="image/jpeg, application/pdf" 
+                            style="display: none;"
+                            onchange="updateFileName(this)"
+                        >
+                        Choose File
+                    </label>
+                    <span id="fileName" class="file-name">
+                        {% if payment.receipt %}
+                            Current receipt
+                        {% else %}
+                            No file chosen
+                        {% endif %}
+                    </span>
+                </div>
+                {% if payment.receipt %}
+                    <div class="mt-2">
+                        <a href="{{ payment.receipt.url }}" target="_blank" class="text-blue-600">
+                            View current receipt
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-update">
+                Update Payment
+            </button>
+        </form>
+    </div>
+
+ {% block scripts %} 
+    <script>
+        function updateFileName(input) {
+            const fileName = input.files[0] ? input.files[0].name : 'No file chosen';
+            document.getElementById('fileName').textContent = fileName;
+        }
+
+        // Format amount with commas for thousands
+        const amountInput = document.getElementById('amount');
+        amountInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            // Remove any non-digit characters except decimal point
+            value = value.replace(/[^\d.]/g, '');
+            // Ensure only one decimal point
+            const parts = value.split('.');
+            if (parts.length > 2) {
+                value = parts[0] + '.' + parts.slice(1).join('');
+            }
+            // Limit to 2 decimal places
+            if (parts[1] && parts[1].length > 2) {
+                value = parts[0] + '.' + parts[1].slice(0, 2);
+            }
+            e.target.value = value;
+        });
+    </script>
+    {% endblock %}
+{% endblock %}

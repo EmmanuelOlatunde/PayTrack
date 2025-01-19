@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Register{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="gradient-background">
+    <div class="card">
+        <h1 class="h4 text-center mb-4 fw-bold">Create an Account</h1>
+        <p class="text-center text-muted small mb-4">
+            Please fill in the details below to create your account
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                {% render_field form.username class="form-control" placeholder="Enter username" %}
+                {% if form.username.errors %}
+                    <div class="text-danger">{{ form.username.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="monthly_target" class="form-label">Monthly Target</label>
+                {% render_field form.monthly_target class="form-control" placeholder="Enter monthly target" %}
+                {% if form.monthly_target.errors %}
+                    <div class="text-danger">{{ form.monthly_target.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="password1" class="form-label">Password</label>
+                {% render_field form.password1 class="form-control" placeholder="Enter password" %}
+                {% if form.password1.errors %}
+                    <div class="text-danger">{{ form.password1.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-4">
+                <label for="password2" class="form-label">Confirm Password</label>
+                {% render_field form.password2 class="form-control" placeholder="Confirm password" %}
+                {% if form.password2.errors %}
+                    <div class="text-danger">{{ form.password2.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+      {% if messages %}
+      {% for message in messages %}
+          <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} text-center" role="alert">
+              {{ message }}
+          </div>
+      {% endfor %}
+      {% endif %}
+
+
+            <button type="submit" class="btn btn-primary mb-3">
+                Register
+            </button>
+
+            <p class="text-center text-muted small mb-0">
+                Already have an account?
+                <a href="{% url 'login' %}" class="text-primary">Log in</a>
+            </p>
+        </form>
+    </div>
+</div>
+{% endblock %}

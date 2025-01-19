@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Contribution Records{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/monthly_records.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="gradient-background">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="text-center mb-4">Monthly Contributions</h1>
+                
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Collector</th>
+                                <th>Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for payment in payments %}
+                            <tr>
+                                <td>{{ payment.month }}</td>
+                                <td>{{ payment.collector }}</td>
+                                <td>₦{{ payment.total }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

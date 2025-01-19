@@ -1,0 +1,59 @@
+{# navbar.html #}
+<nav class="navbar navbar-expand-lg navbar-light bg-white nav-shadow fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold text-primary" href="{% url 'dashboard' %}">
+            PAYTRACK
+        </a>
+
+        <!-- Desktop Menu -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- Add any navigation links here -->
+            </ul>
+            <div class="d-none d-lg-flex align-items-center">
+                {% if user.is_authenticated %}
+                    <span class="text-secondary me-3">Hello, {{ user.username }}</span>
+                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Log Out</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-primary me-2">Login</a>
+                    <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+
+<!-- Add this after the nav to prevent content from hiding behind fixed navbar -->
+<div class=" pt-5"></div>
+
+<style>
+    .nav-shadow {
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    /* Remove the mobile menu specific styles that were causing issues */
+    @media (max-width: 991.98px) {
+        .navbar-collapse {
+            background: white;
+            padding: 1rem;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+    }
+    
+    .navbar-brand {
+        font-size: 1.5rem;
+        letter-spacing: 0.5px;
+    }
+</style>
