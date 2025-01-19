@@ -1,0 +1,53 @@
+/* static/css/register.css */
+.gradient-background {
+    background: linear-gradient(to bottom, #bfdbfe, #93c5fd);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.card {
+    background: white;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    width: 100%;
+    max-width: 28rem;
+}
+
+.form-label {
+    font-size: 0.875rem;
+    color: #27272a;
+}
+
+.form-control {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #d4d4d8;
+}
+
+.form-text {
+    font-size: 0.875rem;
+    color: #a1a1aa;
+}
+
+.btn-primary {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+
+.text-danger {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}

@@ -1,0 +1,21 @@
+body {
+    background: linear-gradient(to bottom right, #bfdbfe, #93c5fd);
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .main-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    width: 100%;
+    max-width: 900px;
+    margin: 20px auto;
+  }
+  .table th {
+    background-color: #f3f4f6;
+  }
+  .btn-naira::before {
+    content: "₦";
+    margin-right: 2px;
+  }

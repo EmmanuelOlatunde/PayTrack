@@ -1,0 +1,17 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+.gradient-background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, #bfdbfe, #60a5fa);
+    min-height: 100vh; /* Ensures it spans the full height of the viewport */
+}
+.card {
+    max-width: 32rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    text-align: center;
+}
