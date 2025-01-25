@@ -36,7 +36,23 @@ class Payment(models.Model):
 
 class MonthlyCollector(models.Model):
     month = models.DateField(unique=True, default=now)
-    #collector = models.ForeignKey(Member, on_delete=models.CASCADE)
+    #collector = models.ForeignKey(Member, on_delete=models.CASCADE)4
+    rollover_debt = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    
+    def calculate_monthly_debt(self):
+        """
+        Calculate debts for each member for the current month.
+        Debts are the sum of the rollover debt and the current month's target.
+        """
+        members = Member.objects.all()
+        debts = {}
+        for member in members:
+            paid = Payment.objects.filter(member=member, date__month=self.month.month).aggregate(Sum('amount'))['amount__sum'] or 0
+            current_target = member.monthly_target
+            previous_debt = self.rollover_debt
+            new_debt = max(0, current_target + previous_debt - paid)
+            debts[member] = new_debt
+        return debts
 
     def __str__(self):
         return f"{self.month.strftime('%B %Y')} - {self.collector.name}"
